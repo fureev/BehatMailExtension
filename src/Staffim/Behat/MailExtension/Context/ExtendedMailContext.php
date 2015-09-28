@@ -2,6 +2,7 @@
 
 namespace Staffim\Behat\MailExtension\Context;
 
+use Behat\Behat\Context\SnippetAcceptingContext;
 use Staffim\Behat\MailExtension\Account;
 use Staffim\Behat\MailExtension\Exception\MailboxException;
 use Staffim\Behat\MailExtension\Exception\MessageException;
@@ -10,13 +11,13 @@ use Staffim\Behat\MailExtension\Exception\MessageException;
  * Additional steps for sending mail.
  */
 // TODO This class may not works correctly for now. Fix it.
-class ExtendedMailContext extends RawMailContext
+class ExtendedMailContext extends RawMailContext implements SnippetAcceptingContext
 {
     /**
-     * @When /^(?:|I )sign in to "(?P<mailServer>[^"]*)" smtp server with "(?P<login>[^"]*)" and "(?P<password>[^"]*)"$/
+     * @When sign in to :smtpServer with :login and :password
      */
     // TODO Refactor: extract port to separate parameter, think about whole step.
-    public function iSignInToSmtpServer($mailServer, $login, $password)
+    public function iSignInToSmtpServerWithLoginAndPassword($mailServer, $login, $password)
     {
         list($mailServer, $port) = explode(':', $mailServer) + [null, null];
 
@@ -25,7 +26,7 @@ class ExtendedMailContext extends RawMailContext
     }
 
     /**
-     * @When /^(?:|I )sign out from mail server$/
+     * @When sign out from mail server
      */
     public function iSignOutFromMailServer()
     {
@@ -33,7 +34,7 @@ class ExtendedMailContext extends RawMailContext
     }
 
     /**
-     * @When /^(?:|I )remove mail from the server$/
+     * @When I remove mail from the server
      */
     public function iRemoveMailMessages()
     {
@@ -41,8 +42,8 @@ class ExtendedMailContext extends RawMailContext
     }
 
     /**
-     * @When /^(?:|I )reply with "(?P<text>(?:[^"]|\\")*)"$/
-     * @When /^(?:|I )reply with "(?P<text>(?:[^"]|\\")*)" and attach "(?P<filename>(?:[^"]|\\")*)"$/
+     * @When I reply with :text
+     * @When I reply with :text and attach :filename
      */
     public function iReplyWithMessage($text, $filename = null)
     {
@@ -54,16 +55,16 @@ class ExtendedMailContext extends RawMailContext
     }
 
     /**
-     * @When /^(?:|I )send mail with subject "(?P<subject>(?:[^"]|\\")*)" and body "(?P<body>(?:[^"]|\\")*)" to address "(?P<to>(?:[^"]|\\")*)" from "(?P<from>(?:[^"]|\\")*)"$/
+     * @When I send mail with :subject and :body to :address from :sender
      */
-    public function iSendMail($subject, $body, $to, $from)
+    public function iSendMail($subject, $body, $address, $sender)
     {
-        $mail = $this->getMailAgent()->createMessage($subject, $body, $from, $to);
+        $mail = $this->getMailAgent()->createMessage($subject, $body, $sender, $address);
         $this->getMailAgent()->send($mail);
     }
 
     /**
-     * @When /^(?:|I )send mail from file "(?P<filename>(?:[^"]|\\")*)"$/
+     * @When I send mail from file :filename
      */
     public function iSendMailFromFile($filename)
     {
@@ -72,7 +73,7 @@ class ExtendedMailContext extends RawMailContext
     }
 
     /**
-     * @When /^(?:|I )reply with message from file "(?P<filename>(?:[^"]|\\")*)"$/
+     * @When I reply with message from file :filename
      */
     public function iReplyWithMessageFromFile($filename)
     {
@@ -81,12 +82,12 @@ class ExtendedMailContext extends RawMailContext
     }
 
     /**
-     * @Then /^(?:|I )should see "(?P<count>\d+)" messag(e|es)$/
+     * @Then I should see :count messag(e|es)
      */
     public function iShouldSeeMailMessages($count)
     {
         $expectedCount = $count;
-        $count         = $this->getMailAgent()->getMailbox()->getMessages()->count();
+        $count         = $this->getMailAgent()->getMailbox()->getSize();
 
         if ($count !== (int) $expectedCount) {
             throw new MailboxException(sprintf('There are %s mail messages, not %s', $count, $expectedCount), $this->getMailAgent()->getMailbox());
@@ -94,7 +95,7 @@ class ExtendedMailContext extends RawMailContext
     }
 
     /**
-     * @Then /^(?:|I )should see attachment "(?P<text>(?:[^"]|\\")*)" in mail message$/
+     * @Then I should see attachment :text in mail message
      */
     public function iShouldSeeAttachment($text)
     {

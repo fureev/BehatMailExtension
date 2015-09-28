@@ -21,7 +21,7 @@ class MailContext extends RawMailContext
     }
 
     /**
-     * @Then /^(?:|I )should see mail message with "(?P<text>(?:[^"]|\\")*)" in subject$/
+     * @Then I should see mail message with :text in subject
      */
     public function iShouldSeeMailMessageWithTextInSubject($text)
     {
@@ -32,7 +32,7 @@ class MailContext extends RawMailContext
     }
 
     /**
-     * @When /^(?:|I )go to "(?P<subject>(?:[^"]|\\")*)" mail message$/
+     * @When I go to :subject mail message
      */
     public function iGoToMailMessage($subject)
     {
@@ -45,7 +45,7 @@ class MailContext extends RawMailContext
     }
 
     /**
-     * @When /^(?:|I )go to mail message with "(?P<address>(?:[^"]|\\")*)" in recipients$/
+     * @When I go to mail message with :address in recipients
      */
     public function iGoToMailMessageWithInRecipients($address)
     {
@@ -58,7 +58,7 @@ class MailContext extends RawMailContext
     }
 
     /**
-     * @Then /^(?:|I )should see mail message with "(?P<address>(?:[^"]|\\")*)" in recipients$/
+     * @Then I should see mail message with :address in recipients
      */
     public function iShouldSeeMailMessageWithAddressInRecepients($address)
     {
@@ -71,7 +71,7 @@ class MailContext extends RawMailContext
     }
 
     /**
-     * @Then /^(?:|I )should see mail message with subject "(?P<subject>(?:[^"]|\\")*)"$/
+     * @Then I should see mail message with :subject
      */
     public function iShouldSeeMailMessageWithSubject($subject)
     {
@@ -82,7 +82,7 @@ class MailContext extends RawMailContext
     }
 
     /**
-     * @Then /^(?:|I )should see "(?P<text>(?:[^"]|\\")*)" in mail message$/
+     * @Then I should see :text in mail message
      */
     public function iShouldSeeInMailMessage($text)
     {
@@ -96,8 +96,8 @@ class MailContext extends RawMailContext
     }
 
     /**
-     * @Then /^(?:|I )should see "(?P<text>(?:[^"]|\\")*)" as reply address in mail message$/
-     * @Then /^(?:|I )should see "(?P<text>(?:[^"]|\\")*)" sender address$/
+     * @Then I should see :text as reply address in mail message
+     * @Then I should see :text sender address
      */
     public function iShouldSeeAsReplyAddress($text)
     {
@@ -111,7 +111,7 @@ class MailContext extends RawMailContext
     }
 
     /**
-     * @Then /^(?:|I )should see "(?P<count>\d+)" new mail messag(e|es) after "(?P<time>\d+)" seconds$/
+     * @Then I should see :count new mail messag(e|es) after :time seconds
      */
     public function iShouldSeeNewMailMessagesAfterTime($count, $time)
     {
@@ -119,7 +119,7 @@ class MailContext extends RawMailContext
     }
 
     /**
-     * @Then /^(?:|I )should see "(?P<count>\d+)" new mail messag(e|es) after some waiting$/
+     * @Then I should see :count new mail messag(e|es) after some waiting
      */
     public function iShouldSeeNewMailMessagesAfterWaiting($count)
     {
@@ -127,7 +127,7 @@ class MailContext extends RawMailContext
     }
 
     /**
-     * @Then /^(?:|I )should see new mail message after some waiting$/
+     * @Then I should see new mail message after some waiting
      */
     public function iShouldSeeNewMailMessageAfterWaiting()
     {
